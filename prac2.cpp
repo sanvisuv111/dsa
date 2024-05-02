@@ -1,341 +1,295 @@
-/******************************************************************************
-Group A-04 (Set Operations)
-To create ADT that implement the "set" concept.
-a. Add (new Element) -Place a value into the set , 
-b. Remove (element) Remove the value
-c. Contains (element) Return true if element is in collection, d. Size () Return number of values in collection Iterator () Return an iterator used to loop over collection, 
-e. Intersection of two sets , 
-f. Union of two sets, 
-g. Difference between two sets, 
-h. Subset
-
-*******************************************************************************/
-
-using namespace std;
-#include <stdio.h>
-
 #include<iostream>
-
-class set 
+using namespace std;
+class Set
 {
-    int a[20],cnt;
-    public:
-    set()
-    {
-        cnt=0;
-    }
- 
-    void add();
-    void Display();
-    int search(int x);
-    void Remove();
-    void size();
-    void union1(set t1,set t2);
-    void intersection(set t1,set t2);
-    void difference(set t1,set t2);
-    void subset(set t1,set t2);
+int set[20],n;
+public:
+Set()
+{
+n=0;
+}
+void add();
+void display();
+void remove(int x);
+int search(int x);
+void set_union(Set &s1,Set &s2);
+void set_intersection(Set &s1,Set &s2);
+void set_difference(Set &s1,Set &s2);
+void set_subset(Set &s1,Set &s2);
 };
-
-void set::add()
+void Set::add()
 {
-    int temp;
-    cout<<"\nEnter data : ";
-    cin>> temp;
-    a[cnt] = temp ;
-    cnt++;
-    cout<<temp <<" is added successfully in the set";
+cout<<"\n Enter the "<<n<<" element:-";
+cin>>set[n];
+n++;
 }
-
-void set::Display()
+void Set::display()
 {
-    cout<<"\nSet = ";
-    for(int i =0; i<cnt ; i++ )
-    {
-        cout<<a[i]<<" " ;
-    }
-}
-
-int set::search(int x)
+if (n!=0)
 {
-    int i;
-    for(i =0; i<cnt ; i++ )
-    {
-        if(x==a[i])
-        return (i);
-    }
-    if(i==cnt)
-    {
-        return (-1);
-    }
-}
-
-void set::Remove()
+for (int i=0;i<n;i++)
 {
-    int temp,x,i;
-    
-    cout<<"\nEnter data to Remove from the set : ";
-    cin>>x;
-    temp = search(x);
-    if(temp != -1)
-    {
-        for(i=temp; i<cnt-1 ; i++ )
-        {
-            a[i]=a[i+1];
-        }
-        cout<<"Given data is Removed : ";
-        cnt--;
-    }
-    else
-    cout<<"Given data is not found ";
-
+cout<<"\t"<<set[i];
 }
-
-void set::size()
+cout<<"\n";
+}
+else
+cout<<"\n Set is empty";
+}
+int Set::search(int x)
 {
-    cout<<"Size of the set is : "<<cnt;
-}
-
-void set::union1(set t1,set t2)
+for (int i =0;i<n;i++)
 {
-    int i;
-    for(i=0;i<t1.cnt;i++)
-    {
-        a[cnt++]=t1.a[i];
-    }
-    
-    for(i=0;i<t2.cnt;i++)
-    {
-        if(t1.search(t2.a[i]) == -1)
-        {
-            a[cnt++]=t2.a[i];
-        }
-    }
-    
+if (x==set[i])
+return i;
 }
-
-
-void set::intersection(set t1,set t2)
+return -1;
+}
+void Set::remove(int x)
 {
-    int i;
-    
-    for(i=0;i<t2.cnt;i++)
-    {
-        if(t1.search(t2.a[i]) != -1)
-        {
-            a[cnt++]=t2.a[i];
-        }
-    }
-    
-}
-
-
-void set::difference(set t1,set t2)
+int ele = search(x);
+if (ele != -1)
 {
-    int i;
-    
-    for(i=0;i<t1.cnt;i++)
-    {
-        if(t2.search(t1.a[i]) == -1)
-        {
-            a[cnt++]=t1.a[i];
-        }
-    }
-    
-}
-
-
-void set::subset(set t1,set t2)
+for (int j = ele; j < n - 1; j++)
 {
-    int i, subsetcnt = 0;
-    
-    for(i=0;i<t1.cnt;i++)
-    {
-        if(t2.search(t1.a[i]) != -1)
-        {
-            subsetcnt++;
-        }
-    }
-    if(subsetcnt == t1.cnt)
-    {
-        cout<<"\nGiven set S1 is subset of S2";
-    }
-    else
-    {
-        cout<<"\nGiven set S1 is NOT subset of S2";
-    }
+set[j] = set[j + 1];
 }
-
-
-
+n--;
+cout << "\nElement " << x << " removed successfully.";
+}
+else
+{
+cout << "\nElement not found in the set.";
+}
+}
+void Set::set_union(Set &s1,Set &s2)
+{
+n=0;
+for (int i = 0; i < s1.n; i++)
+{
+set[i] = s1.set[i];
+n++;
+}
+for (int i = 0; i < s2.n; i++)
+{
+if (search(s2.set[i]) == -1)
+{
+set[n++] = s2.set[i];
+}
+}
+cout << "\nUnion of two sets: ";
+display();
+}
+void Set::set_intersection(Set &s1,Set &s2)
+{
+n=0;
+for (int i = 0; i < s1.n ; i++)
+{
+for(int j = 0; j < s2.n; j++)
+{
+if (s1.set[i] == s2.set[j])
+{
+set[n++] = s1.set[i];
+break;
+}
+}
+}
+cout << "\nIntersection of two sets: ";
+display();
+}
+void Set::set_difference(Set &s1,Set &s2)
+{
+n=0;
+for (int i = 0; i < s1.n ; i++)
+{
+int flag= 0;
+for(int j = 0; j < s2.n; j++)
+{
+if (s1.set[i] == s2.set[j])
+{
+flag=1;
+break;
+}
+}
+if (flag == 0)
+{
+set[n++] = s1.set[i];
+}
+}
+cout << "\nDifference of two sets: ";
+display();
+}
+void Set::set_subset(Set &s1,Set &s2)
+{
+n=0;
+int cnt=0,cnt1=0;
+for (int i = 0; i < s1.n ; i++)
+{
+for(int j = 0; j < s2.n; j++)
+{
+if (s1.set[i] == s2.set[j])
+{
+set[n++] = s1.set[i];
+break;
+}
+}
+}
+if (n == s1.n)
+{
+cout<<"\n A is subset of B :-";
+display();
+}
+else if (n == s2.n)
+{
+cout<<"\n B is subset of A :-";
+display();
+}
+else
+{
+cout<<"\n There is subset not found. ";
+}
+}
 int main()
 {
-    set S1;  
-    set S2;
-    set S3;
-    int ch;
-    
-    do
-    {
-        cout<<"\n1. Add the data in set";
-        cout<<"\n2. Remove the data from set";
-        cout<<"\n3. Display";
-        cout<<"\n4. search";
-        cout<<"\n5. Remove";
-        cout<<"\n6. Size";
-        cout<<"\n7. union";
-        cout<<"\n8. intersection";   
-        cout<<"\n9. difference";  
-        cout<<"\n10. Subset";
-        cout<<"\n11. Exit";
-        cout<<"\nEnter your choice : ";
-        cin>>ch;
-        
-        switch(ch)
-        {
-            case 1: // Add operation.
-                S1.add();
-            break;
-            case 3: // Display operation.
-                S1.Display();
-            break;
-            case 4: // search operation.
-                int temp,x;
-                cout<<"\nEnter data to search in the set : ";
-                cin>>x;
-                temp = S1.search(x);
-                if(temp != -1)
-                    cout<<"Given data is found at the position : "<<temp;
-                else
-                    cout<<"Given data is not found ";
-            break;            
-            case 5: // Remove operation.
-                S1.Remove();
-            break;
-            case 6: // Remove operation.
-                S1.size();
-            break;
-            
-            case 7: // union operation.
-                int i,c1,c2;
-                cout<<"\nSet one count : ";
-                cin>>c1;
-                
-                for(i=0;i<c1;i++)
-                {
-                    S1.add();
-                }
-                
-              
-                cout<<"\nSet two count : ";
-                cin>>c2;
-                
-                for(i=0;i<c2;i++)
-                {
-                    S2.add();
-                }
-                
-                S1.Display();
-                S2.Display();
-                
-                S3.union1(S1,S2);
-                cout<<"\nUnion of two set is : "<<endl;
-                S3.Display();
-                
-            break;
-            case 8: // intersection operation.
-                
-                cout<<"\nSet one count : ";
-                cin>>c1;
-                
-                for(i=0;i<c1;i++)
-                {
-                    S1.add();
-                }
-                
-              
-                cout<<"\nSet two count : ";
-                cin>>c2;
-                
-                for(i=0;i<c2;i++)
-                {
-                    S2.add();
-                }
-                
-                S1.Display();
-                S2.Display();
-                
-                S3.intersection(S1,S2);
-                cout<<"\n Intersection of two set is : "<<endl;
-                S3.Display();
-                
-            break;            
-
-            case 9: // intersection operation.
-                
-                cout<<"\nSet one count : ";
-                cin>>c1;
-                
-                for(i=0;i<c1;i++)
-                {
-                    S1.add();
-                }
-                
-              
-                cout<<"\nSet two count : ";
-                cin>>c2;
-                
-                for(i=0;i<c2;i++)
-                {
-                    S2.add();
-                }
-                
-                S1.Display();
-                S2.Display();
-                
-                S3.difference(S1,S2);
-                cout<<"\n Difference of two set is : "<<endl;
-                S3.Display();
-                
-            break;            
-
-            case 10: // subset operation.
-                
-                cout<<"\nSet one count : ";
-                cin>>c1;
-                
-                for(i=0;i<c1;i++)
-                {
-                    S1.add();
-                }
-                
-              
-                cout<<"\nSet two count : ";
-                cin>>c2;
-                
-                for(i=0;i<c2;i++)
-                {
-                    S2.add();
-                }
-                
-                S1.Display();
-                S2.Display();
-                
-                S3.subset(S1,S2);
-               
-            break;            
-            
-            default:
-                cout<<"\nWrong choice";
-            break;
-          
-          
-          
-        }
-        
-    }while (ch != 11);
-    
-    
-    return 0;
+Set s1,s2,s3;
+int ch,element;
+do
+{
+cout << "\n1: Enter an element";
+cout << "\n2: Display elements";
+cout << "\n3: Remove an element";
+cout << "\n4: Search for an element";
+cout<< "\n5: Union of set ";
+cout<< "\n6: Intersection of set ";
+cout<< "\n7: Difference of set ";
+cout<< "\n8: Subset of set ";
+cout << "\n9: Exit";
+cout << "\nEnter your choice:- ";
+cin>>ch;
+switch(ch)
+{
+case 1:
+int ch1;
+cout<<"\n 1:Add element in set A";
+cout<<"\n 2:Add element in set B";
+cout << "\nEnter your choice:- ";
+cin>>ch1;
+switch(ch1)
+{
+case 1:
+s1.add();
+break;
+case 2:
+s2.add();
+break;
+default:
+cout<<"\nInvalid choice";
 }
-
-
+break;
+case 2:
+int ch2;
+cout<<"\n 1:Display element in set A";
+cout<<"\n 2:Display element in set B";
+cout << "\nEnter your choice:- ";
+cin>>ch2;
+switch(ch2)
+{
+case 1:
+s1.display();
+break;
+case 2:
+s2.display();
+break;
+default:
+cout<<"\nInvalid choice";
+}
+break;
+case 3:
+int ch3;
+cout<<"\n 1:Remove element in set A";
+cout<<"\n 2:Remove element in set B";
+cout << "\nEnter your choice:- ";
+cin>>ch3;
+switch(ch3)
+{
+case 1:
+cout << "\nEnter the element to remove: ";
+cin >> element;
+s1.remove(element);
+break;
+case 2:
+cout << "\nEnter the element to remove: ";
+cin >> element;
+s2.remove(element);
+break;
+default:
+cout<<"\nInvalid choice";
+}
+break;
+case 4:
+int ch4,pos;
+cout<<"\n 1:Search element in set A";
+cout<<"\n 2:Search element in set B";
+cout << "\nEnter your choice:- ";
+cin>>ch4;
+switch(ch4)
+{
+case 1:
+cout << "\nEnter the element to search: ";
+cin >> element;
+pos= s1.search(element) ;
+if ( pos != -1)
+{
+cout << "\nElement " << element << " found in the set at"<< pos;
+}
+else
+{
+cout << "\nElement " << element << " not found in the set ";
+}
+break;
+case 2:
+cout << "\nEnter the element to search: ";
+cin >> element;
+pos= s2.search(element) ;
+if ( pos != -1)
+{
+cout << "\nElement " << element << " found in the set at"<< pos;
+}
+else
+{
+cout << "\nElement " << element << " not found in the set ";
+}
+break;
+}
+break;
+case 5:
+s3.set_union(s1,s2);
+break;
+case 6:
+s3.set_intersection(s1,s2);
+break;
+case 7:
+int ch5;
+cout<<"\n 1:Difference between set A & B";
+cout<<"\n 2:Difference between set B & A ";
+cout << "\nEnter your choice:- ";
+cin>>ch5;
+switch(ch5)
+{
+case 1:
+s3.set_difference(s1,s2);
+break;
+case 2:
+s3.set_difference(s2,s1);
+break;
+default:
+cout<<"\nInvalid choice";
+}
+break;
+case 8:
+s3.set_subset(s1,s2);
+break;
+}
+}while(ch!=9);
+return 0;
+}
